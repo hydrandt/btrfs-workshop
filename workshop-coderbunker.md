@@ -32,8 +32,8 @@ lukas
 
 ## My workflow:
 
--> ▛▀▀▀▀▀▀▀▀▀▀▀▀▀▜          ▛▀▀▀▀▀▀▀▀▀▀▀▀▀▀▜
--> ▌broken server▐  ----->  ▌working server▐
+-> ▛▀▀▀▀▀▀▀▀▀▀▀▀▀▜          ▛▀▀▀▀▀▀▀▀▀▀▀▀▀▀▜  
+-> ▌broken server▐   ----->  ▌working server ▐  
 -> ▙▄▄▄▄▄▄▄▄▄▄▄▄▄▟          ▙▄▄▄▄▄▄▄▄▄▄▄▄▄▄▟
 
 
@@ -97,7 +97,7 @@ btrfs device delete /dev/sdX /mnt/workshop
 
 # Disk usage
 
-btrfs filesystem du 
+btrfs filesystem usage /[montpoint] 
 
 
 # Enable compression, how it works, available algorithms (10 min)
@@ -120,12 +120,12 @@ btrfs subvolume snapshot /mnt/workshop /mnt/workshop/snapshots/20170512-test-sna
 https://btrfs.wiki.kernel.org/index.php/Incremental_Backup
 
 btrfs subvolume snapshot -r /mnt/workshop/data /mnt/workshop/snapshots/backup-latest
-sync
-btrfs subvolume create /mnt/workshop/backup
-btrfs send /mnt/workshop/snapshots/170512-backup | btrfs receive /mnt/workshop/backup/latest
+sync  
+btrfs subvolume create /mnt/workshop/backup  
+btrfs send /mnt/workshop/snapshots/170512-backup | btrfs receive /mnt/workshop/backup/latest  
 btrfs subvolume snapshot /mnt/workshop/backup/latest /mnt/workshop/backup/170512
 
-next day:
+### next day:  
 btrfs subvolume snapshot -r /mnt/workshop/data /mnt/workshop/snapshots/170513-backup
 btrfs send -p /mnt/workshop/snapshots/170512-backup /mnt/workshop/snapshots/170513-backup | btrfs receive /mnt/workshop/backup/latest
 btrfs subvolume snapshot /mnt/workshop/backup/latest /mnt/workshop/backup/170513
