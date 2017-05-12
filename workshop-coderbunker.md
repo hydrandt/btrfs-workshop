@@ -97,7 +97,9 @@ btrfs device delete /dev/sdX /mnt/workshop
 
 # Disk usage
 
-btrfs filesystem usage /[montpoint] 
+traditional `df` command does not show the real usage status of a btrfs filesystem
+
+`btrfs filesystem usage [montpoint]`   does that
 
 
 # Enable compression, how it works, available algorithms (10 min)
