@@ -1,12 +1,8 @@
-%title: btrfs - modern linux CoW filesystem
-%author: @hydrandt|lukas@aiya.cz
-%date: 2017-05-12
+Presentation used for workshop about btrfs at Shanghai Coderbunker 2017-05-12
 
--> # btrfs - modern linux CoW filesystem
+## btrfs - modern linux CoW filesystem
 
--> *https://btrfs.wiki.kernel.org/*
-
-* presentation created using [mdp](https://github.com/visit1985/mdp)
+*https://btrfs.wiki.kernel.org/*
 
 ## Agenda
 1. Introduction: What is btrfs,how it works, history (20 min)
@@ -19,8 +15,6 @@
 8. Transferring a subvolume to another machine: btrfs send / receive (15 min)
 9. Set up a simple backup system with rsync and snapshots (20 min)
 
----
-
 # $ whoami
 lukas
 
@@ -32,12 +26,11 @@ lukas
 
 ## My workflow:
 
+<pre>
 -> ▛▀▀▀▀▀▀▀▀▀▀▀▀▀▜          ▛▀▀▀▀▀▀▀▀▀▀▀▀▀▀▜  
 -> ▌broken server▐   ----->  ▌working server ▐  
 -> ▙▄▄▄▄▄▄▄▄▄▄▄▄▄▟          ▙▄▄▄▄▄▄▄▄▄▄▄▄▄▄▟
-
-
----
+</pre>
 
 # What is btrfs
 
@@ -58,25 +51,16 @@ lukas
 * Send/receive of subvolume changes -> incremental filesystem mirroring
 * out-of-band deduplication
 
+## What is copy-on-write (CoW)
 
+## Start of workshop: Distributing the virtualbox VM image (10 min)
 
----
-
-# What is copy-on-write (CoW)
-
----
-
-
-# Start of workshop: Distributing the virtualbox VM image (10 min)
-
-# Useful guide: https://btrfs.wiki.kernel.org/index.php/SysadminGuide
+Useful guide: https://btrfs.wiki.kernel.org/index.php/SysadminGuide
 
 man btrfs
 man btrfs-filesystem
 
----
-
-# Create btrfs filesystem, put some data on, add second block device (10 min)
+## Create btrfs filesystem, put some data on, add second block device (10 min)
 
 mkfs.btrfs /dev/sdXX
 mkdir /mnt/workshop
@@ -93,23 +77,21 @@ btrfs balance start -dconvert=raid1 -mconvert=raid1 /mnt/workshop
 
 btrfs device delete /dev/sdX /mnt/workshop
 
----
-
-# Disk usage
+## Disk usage
 
 traditional `df` command does not show the real usage status of a btrfs filesystem
 
 `btrfs filesystem usage [montpoint]`   does that
 
 
-# Enable compression, how it works, available algorithms (10 min)
+## Enable compression, how it works, available algorithms (10 min)
 
 mount -o remount,compress=lzo /mnt/workshop
 
 btrfs filesystem defrag -v -r -czlib /mnt/workshop
 
 
-# Create snapshots / subvolumes: how it works, read only and writable, automatic tools (20 min)
+## Create snapshots / subvolumes: how it works, read only and writable, automatic tools (20 min)
 
 btrfs subvolume create /mnt/workshop/new_subvol
 
@@ -117,22 +99,24 @@ mkdir /mnt/workshop/snapshots
 
 btrfs subvolume snapshot /mnt/workshop /mnt/workshop/snapshots/20170512-test-snapshot
 
-# Transferring a subvolume to another machine: btrfs send / receive (15 min)
+## Transferring a subvolume to another machine: btrfs send / receive (15 min)
 
 https://btrfs.wiki.kernel.org/index.php/Incremental_Backup
 
+<pre>
 btrfs subvolume snapshot -r /mnt/workshop/data /mnt/workshop/snapshots/backup-latest
 sync  
 btrfs subvolume create /mnt/workshop/backup  
 btrfs send /mnt/workshop/snapshots/170512-backup | btrfs receive /mnt/workshop/backup/latest  
 btrfs subvolume snapshot /mnt/workshop/backup/latest /mnt/workshop/backup/170512
+</pre>
 
-### next day:  
+next day:  
+<pre>
 btrfs subvolume snapshot -r /mnt/workshop/data /mnt/workshop/snapshots/170513-backup
 btrfs send -p /mnt/workshop/snapshots/170512-backup /mnt/workshop/snapshots/170513-backup | btrfs receive /mnt/workshop/backup/latest
 btrfs subvolume snapshot /mnt/workshop/backup/latest /mnt/workshop/backup/170513
+</pre>
 
-
-
-# Set up a simple backup system with rsync and snapshots (20 min)
+## Set up a simple backup system with rsync and snapshots (20 min)
 
