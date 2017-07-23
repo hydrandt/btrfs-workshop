@@ -28,7 +28,7 @@ lukas
 
 <pre>
 -> ▛▀▀▀▀▀▀▀▀▀▀▀▀▀▜          ▛▀▀▀▀▀▀▀▀▀▀▀▀▀▀▜  
--> ▌broken server▐   ----->  ▌working server ▐  
+-> ▌broken server▐   -----> ▌working server▐  
 -> ▙▄▄▄▄▄▄▄▄▄▄▄▄▄▟          ▙▄▄▄▄▄▄▄▄▄▄▄▄▄▄▟
 </pre>
 
